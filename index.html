@@ -1,15 +1,23 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link rel="stylesheet" href="style.css">
-  <title>Gyroscope Project</title>
-</head>
+<!DOCTYPE html>
+<html>
+<meta name="viewport" content="width=device-width; initial-scale=1.0; maximum-scale=1.0; user-scalable=no; viewport-fit=cover"">
+<link rel="stylesheet" href="style.css">
+<title>Gyroscope Game</title>
 <body>
-<div class="gyro-data"></div>
-<script src="main.js"></script>
+  <div class="start-game">Start Game</div>
+
+  <div class="rotate-msg">
+    <div class="rotate-txt">Please Rotate your device to landscape</div>
+  </div>
+  <div class="pause-msg invisible">
+    <div class="pause-txt">Game is paused. Tap to resume</div>
+  </div>
+
+  <canvas id="gameCanvas" class="game-canvas"></canvas>
+  <script src="Game.js" type="application/javascript"></script>
+  <script src="Canvas.js" type="application/javascript"></script>
+  <script src="DOM.js" type="application/javascript"></script>
+  <script src="Device.js" type="application/javascript"></script>
+  <script src="main.js" type="application/javascript"></script>
 </body>
 </html>
