@@ -1,0 +1,1 @@
+DeviceMotionEvent.requestPermission();
