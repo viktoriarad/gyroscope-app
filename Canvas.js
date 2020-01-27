@@ -22,7 +22,7 @@ const Canvas = (canvasParam, ctxParam) => {
      * @returns {boolean} True if canvas was rendered or false if not
      */
     const render = () => {
-        if (IsGameStarted === false) return false;
+        if (IsGameStarted() === false) return false;
 
         const ball = getBallProperties();
         const holes = getHoles();

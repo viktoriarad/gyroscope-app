@@ -146,11 +146,13 @@ const Game = (gameSize, ballSize) => {
         ball.x -= forX * multiplier;
         ball.y -= forY * multiplier;
 
-        const gotInTrap = holes.traps.some(hole => {
-            return Math.abs(hole.x - ball.x) - hole.radius <= ball.radius / 2;
+        const gotInTrap = holes.traps.some(el => {
+            const x = Math.abs(el.x - ball.x) - el.radius <= 0;
+            const y = Math.abs(el.y - ball.y) - el.radius <= 0;
+            return x && y;
         });
 
-        if (gotInTrap) pause();
+        if (gotInTrap) gameOver();
     };
 
     return {

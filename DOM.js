@@ -2,6 +2,7 @@ const DOM = () => {
     const startGameBtn = document.querySelector('.start-game');
     const rotateMsg = document.querySelector('.rotate-msg');
     const pauseMsg = document.querySelector('.pause-msg');
+    const gameoverMsg = document.querySelector('.gameover-msg');
     const canvas = document.getElementById('gameCanvas');
 
     let getDeviceSize;
@@ -83,12 +84,16 @@ const DOM = () => {
 
     const deviceMotionHandler = (e) => {
         if (isGameStarted() && isGamePaused()) return;
+        if (isGameOvered()) return;
 
         const x = e.accelerationIncludingGravity.x.toFixed(1);
         const y = e.accelerationIncludingGravity.y.toFixed(1);
 
         moveBallBy(y, x);
         render();
+        if (isGameOvered()) {
+            gameoverMsg.classList.remove('invisible');
+        }
     };
 
     const startGameButtonHandler = () => {
@@ -114,16 +119,25 @@ const DOM = () => {
         const isPortrait = isPortraitMode();
         if (isPortrait) {
             rotateMsg.classList.remove('invisible');
+            gameoverMsg.classList.add('invisible');
         } else {
             rotateMsg.classList.add('invisible');
         }
     };
 
     const ifLandscape = () => {
-        const isLandscape = isLandscapeMode();
+        const landscape = isLandscapeMode();
+        const gameStart = isGameStarted();
+        const gamePause = isGamePaused();
+        const gameOver = isGameOvered();
 
-        if (isGameStarted() && isGamePaused() && isLandscape) pauseMsg.classList.remove('invisible');
-        else pauseMsg.classList.add('invisible');
+        if (gameStart && gamePause && landscape) {
+            pauseMsg.classList.remove('invisible');
+        } else {
+            pauseMsg.classList.add('invisible');
+        }
+
+        if (gameOver && landscape) gameoverMsg.classList.remove('invisible');
     };
 
     startGameBtn.addEventListener('click', () => getAPIPermission());
@@ -132,6 +146,11 @@ const DOM = () => {
     pauseMsg.addEventListener('click', () => {
         resumeGame();
         pauseMsg.classList.add('invisible');
+    });
+
+    gameoverMsg.addEventListener('click', () => {
+        startGame();
+        gameoverMsg.classList.add('invisible');
     });
 
     window.addEventListener('load', onLoad);
