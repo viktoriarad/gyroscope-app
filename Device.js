@@ -2,6 +2,10 @@ const Device = () => {
     let motionPermission = false;
     let onGrantedPermission;
 
+    /**
+     * Setting of function which is called after sensors permission was granted
+     * @param {function} functionToSet
+     */
     const setGrantedPermissionAction = (functionToSet) => {
         onGrantedPermission = functionToSet;
     };
@@ -44,6 +48,10 @@ const Device = () => {
         return {width, height};
     };
 
+    /**
+     * Function gets orientation properties of device.
+     * @returns {{default: {string}, current: {string}, reversed: {boolean}}} Returns object with three properties
+     */
     const getOrientation = () => {
         const size = getDefaultSize();
         const defaultOrientation = size.width > size.height ? 'landscape' : 'portrait';
@@ -68,10 +76,18 @@ const Device = () => {
         return result;
     };
 
+    /**
+     * Function checks if device is in landscape mode
+     * @returns {boolean} True or false
+     */
     const isLandscape = () => {
         return getOrientation().current === 'landscape';
     };
 
+    /**
+     * Function checks if device is in portrait mode
+     * @returns {boolean} True or false
+     */
     const isPortrait = () => {
         return getOrientation().current === 'portrait';
     };
