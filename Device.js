@@ -32,21 +32,16 @@ const Device = () => {
         return motionPermission;
     };
 
+    /**
+     * Function gets pixels size of device screen.
+     * @returns {{width: {number}, height: {number}}} Object with width and height.
+     */
     const getDefaultSize = () => {
         const iOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
         const width = iOS === true ? screen.width : window.innerWidth;
         const height = iOS === true ? screen.height : window.innerHeight;
 
         return {width, height};
-    };
-
-    const getWindowSize = () => {
-        const windowSize = getDefaultSize();
-        const deviceOrientation = getOrientation();
-
-        return deviceOrientation.default === deviceOrientation.current
-            ? windowSize
-            : {width: windowSize.height, height: windowSize.width};
     };
 
     const getOrientation = () => {
@@ -84,7 +79,6 @@ const Device = () => {
     return {
         requestSensorsPermission,
         getDefaultSize,
-        getWindowSize,
         getOrientation,
         isLandscape,
         isPortrait,
