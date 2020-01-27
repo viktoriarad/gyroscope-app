@@ -26,6 +26,7 @@ oGame.setOrientationGetter(oDevice.getOrientation);
 
 oCanvas.setBallGetter(oGame.getBall);
 oCanvas.setIsGameStartedGetter(oGame.isStarted);
+oCanvas.setHolesGetter(oGame.getHoles);
 
 
 const changeProtocolToHTTP = () => {

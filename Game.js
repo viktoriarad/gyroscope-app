@@ -16,6 +16,17 @@ const Game = (gameSize, ballSize) => {
         radius: ballSize
     };
 
+    const holes = {
+        finish: {x: 200, y: 200},
+        traps: [
+            {x: 100, y: 300},
+            {x: 700, y: 10},
+            {x: 500, y: 80},
+            {x: 300, y: 300},
+        ]
+    };
+
+    let level = 0;
     let isStart = false;
     let isPause = false;
     let isGameOver = false;
@@ -25,6 +36,8 @@ const Game = (gameSize, ballSize) => {
         getOrientation = functionToSet;
     };
 
+    const getHoles = () => holes;
+
     /**
      * Function starts the game
      * @returns {void}
@@ -32,8 +45,39 @@ const Game = (gameSize, ballSize) => {
     const start = () => {
         isStart = true;
         isPause = false;
+        level++;
         ball.x = canvasSize.width / 2;
         ball.y = canvasSize.height / 2;
+        generateHoles();
+    };
+
+    const generateHoles = () => {
+        const trapHoles = [];
+        const finishHole = {};
+        const holeAmount = 5 + level * 2;
+        const radius = 15 + level * 2;
+
+        for (let i=0 ; i <= holeAmount; i++) {
+            const x = Math.floor(Math.random() * (canvasSize.width - radius*2));
+            const y = Math.floor(Math.random() * (canvasSize.height - radius*2));
+            trapHoles.push({x, y, radius});
+        }
+
+        holes.traps = trapHoles;
+        holes.finish = generateFinishHole(trapHoles);
+    };
+
+    const generateFinishHole = (trapHoles) => {
+        const radius = 15;
+        const x = Math.floor(Math.random() * (canvasSize.width - radius*2));
+        const y = Math.floor(Math.random() * (canvasSize.height - radius*2));
+
+        const regenerate = trapHoles.some(hole => {
+            return Math.abs(hole.x - x) - hole.radius - radius <= radius;
+        });
+
+        if (regenerate) return generateFinishHole(trapHoles);
+        return {x, y, radius};
     };
 
     /**
@@ -114,6 +158,7 @@ const Game = (gameSize, ballSize) => {
         isStarted,
         isPaused,
         isGameOvered,
-        setOrientationGetter
+        setOrientationGetter,
+        getHoles
     };
 };
