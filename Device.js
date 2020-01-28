@@ -3,7 +3,7 @@ const Device = () => {
     let onGrantedPermission;
 
     /**
-     * Setting of function which is called after sensors permission was granted
+     * Ustalenie funkcja ktora ma byc wywolana zaraz po otrzymaniu pozwolenia na API sensorow
      * @param {function} functionToSet
      */
     const setGrantedPermissionAction = (functionToSet) => {
@@ -11,7 +11,7 @@ const Device = () => {
     };
 
     /**
-     * Function asks for permission to get device sensors API
+     * Funkcja prosi o pozwolenie aby sie korzystac z API sensorow
      * @returns {boolean} True if permission was granted and false if not.
      */
     const requestSensorsPermission = () => {
@@ -37,7 +37,7 @@ const Device = () => {
     };
 
     /**
-     * Function gets pixels size of device screen.
+     * Funkcja zwraca rozmiar ekranu urzadzenia w pixeliach
      * @returns {{width: {number}, height: {number}}} Object with width and height.
      */
     const getDefaultSize = () => {
@@ -49,7 +49,7 @@ const Device = () => {
     };
 
     /**
-     * Function gets orientation properties of device.
+     * Funkcja zwraca wlasciwosci dotyczace orientacji urzadzenia
      * @returns {{default: {string}, current: {string}, reversed: {boolean}}} Returns object with three properties
      */
     const getOrientation = () => {
@@ -77,7 +77,7 @@ const Device = () => {
     };
 
     /**
-     * Function checks if device is in landscape mode
+     * Funkcja sparwdza czy urzadzenie jest w landscape mode
      * @returns {boolean} True or false
      */
     const isLandscape = () => {
@@ -85,7 +85,7 @@ const Device = () => {
     };
 
     /**
-     * Function checks if device is in portrait mode
+     * Funkcja sparwdza czy urzadzenie jest w portrait mode
      * @returns {boolean} True or false
      */
     const isPortrait = () => {

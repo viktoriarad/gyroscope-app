@@ -86,14 +86,24 @@ const DOM = () => {
     const getCanvas = () => canvas;
     const getCtx = () => canvas.getContext("2d");
 
+    /**
+     * Funkcja ktora obluguje window load event i sprawdza
+     * w ktorym modzie (portrait lub landscape) urzadzenie sie znajduje.
+     * @void
+     */
     const onLoad = () => {
         const device = getDeviceSize();
         canvas.width = device.width > device.height ? device.width : device.height;
         canvas.height = device.width > device.height ? device.height : device.width;
 
         ifPortrait();
+        ifLandscape();
     };
 
+    /**
+     * Funkcja obluguje eventy sensorow urzadzenia
+     * @param {object} e Event sensorow
+     */
     const deviceMotionHandler = (e) => {
         const start = isGameStarted();
         const pause = isGamePaused();
@@ -115,6 +125,10 @@ const DOM = () => {
         }
     };
 
+    /**
+     * Funkcja obluguje event klikniecia na przycisk "Start Game"
+     * @void
+     */
     const startGameButtonHandler = () => {
         startGame();
         render();
@@ -124,6 +138,10 @@ const DOM = () => {
 
     };
 
+    /**
+     * Funkcja obluguje event zmiany orientacji urzadzenia
+     * @void
+     */
     const onOrientationChange = () => {
         pauseGame();
         ifPortrait();
@@ -134,6 +152,11 @@ const DOM = () => {
         }
     };
 
+    /**
+     * Funkcja dodaje i usuwa popupy z komunikatami w zaleznosci od tego
+     * czy urzadzenie sie znajduje w portrait mode czy nie.
+     * @void
+     */
     const ifPortrait = () => {
         const isPortrait = isPortraitMode();
         if (isPortrait) {
@@ -145,6 +168,11 @@ const DOM = () => {
         }
     };
 
+    /**
+     * Funkcja dodaje i usuwa popupy z komunikatami w zaleznosci od tego
+     * czy urzadzenie sie znajduje w landscape mode czy nie.
+     * @void
+     */
     const ifLandscape = () => {
         const landscape = isLandscapeMode();
         const gameStart = isGameStarted();
@@ -165,9 +193,12 @@ const DOM = () => {
         }
     };
 
+    /* Dodawanie nasluchiwan na DOM elementy */
+
     startGameBtn.addEventListener('click', () => getAPIPermission());
 
     window.addEventListener("orientationchange", onOrientationChange);
+
     pauseMsg.addEventListener('click', () => {
         resumeGame();
         pauseMsg.classList.add('invisible');

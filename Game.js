@@ -10,12 +10,20 @@ const Game = (gameSize, ballSize) => {
         height: gameSize.width > gameSize.height ? gameSize.height : gameSize.width
     };
 
+    /**
+     * Zmienna przechowuje w siebie pozycje i radius pilki
+     * @type {{x: number, y: number, radius: number}}
+     */
     const ball = {
         x: 0,
         y: 0,
         radius: ballSize
     };
 
+    /**
+     * Zmienna przechowuje w siebie wszystkie dziury (czerwone pulapki i zielony finisz)
+     * @type {{traps: {x: number, y: number, radius: number}[], finish: {x: number, y: number, radius: number}}}
+     */
     const holes = {
         finish: {x: 0, y: 0, radius: ballSize * 1.5},
         traps: [
@@ -37,7 +45,7 @@ const Game = (gameSize, ballSize) => {
     const getHoles = () => holes;
 
     /**
-     * Function starts the game
+     * Funkcja startuje gre
      * @param {boolean} restart True if restart is needed or false if not
      * @returns {void}
      */
@@ -53,6 +61,10 @@ const Game = (gameSize, ballSize) => {
         generateTrapHoles();
     };
 
+    /**
+     * Funkcja generuje wszystkie czerwone pulapki
+     * @void
+     */
     const generateTrapHoles = () => {
         const trapHoles = [];
         const holeAmount = 5 + level * 2;
@@ -66,6 +78,10 @@ const Game = (gameSize, ballSize) => {
         holes.traps = trapHoles;
     };
 
+    /**
+     * Funkcja generuje pulapke i sprawdza aby sie nie znajdowala zablisko obok innej
+     * @void
+     */
     const generateHole = (radius, trapHoles) => {
         const x = Math.floor(Math.random() * (canvasSize.width - radius*2) + radius);
         const y = Math.floor(Math.random() * (canvasSize.height - radius*2) + radius);
@@ -89,6 +105,10 @@ const Game = (gameSize, ballSize) => {
         return {x, y, radius}
     };
 
+    /**
+     * Funkcja generuje pozycje pilki
+     * @void
+     */
     const generateBallPosition = () => {
         const x = Math.floor((canvasSize.width * 0.8) + Math.random() * (canvasSize.width * 0.2) - ballSize);
         const y = Math.floor(Math.random() * (canvasSize.height - ballSize*2) + ballSize);
@@ -97,6 +117,10 @@ const Game = (gameSize, ballSize) => {
         ball.y = y;
     };
 
+    /**
+     * Funkcja generuje pozycje zielonej dziury (finisz)
+     * @void
+     */
     const generateFinishHolePosition = () => {
         const x = Math.floor(Math.random() * (canvasSize.width * 0.2) + holes.finish.radius);
         const y = Math.floor(Math.random() * (canvasSize.height - holes.finish.radius*2) + holes.finish.radius);
@@ -106,17 +130,7 @@ const Game = (gameSize, ballSize) => {
     };
 
     /**
-     * Function returns game state
-     * @returns {string} start, pause or gameover
-     */
-    const getState = () => {
-        if (isStart) return 'start';
-        if (isPause) return 'pause';
-        if (isGameOver) return 'gameover';
-    };
-
-    /**
-     * Function checks if the game was started
+     * Funkcja sprawdza czy gra sie wystartowala
      * @returns {boolean} True or false
      */
     const isStarted = () => {
@@ -124,7 +138,7 @@ const Game = (gameSize, ballSize) => {
     };
 
     /**
-     * Function checks if it is pause
+     * Funkcja sprawdza czy gra jest w pauzie
      * @returns {boolean} True or false
      */
     const isPaused = () => {
@@ -132,7 +146,7 @@ const Game = (gameSize, ballSize) => {
     };
 
     /**
-     * Function checks if it is game over
+     * Funkcja sprawdza czy gra jest przegrana
      * @returns {boolean} True or false
      */
     const isGameOvered = () => {
@@ -140,7 +154,7 @@ const Game = (gameSize, ballSize) => {
     };
 
     /**
-     * Function checks if it is win
+     * Funkcja sprawdza czy gra jest wygrana
      * @returns {boolean} True or false
      */
     const isWin = () => {
@@ -148,7 +162,7 @@ const Game = (gameSize, ballSize) => {
     };
 
     /**
-     * Function pauses the game if it has been started
+     * Funkcja ustawia gre na pauze
      * @returns {void}
      */
     const pause = () => {
@@ -156,7 +170,7 @@ const Game = (gameSize, ballSize) => {
     };
 
     /**
-     * Function resume the game if it has been started
+     * Funkcja kontynuje gre jesli ta byla na pauzie
      * @returns {void}
      */
     const resume = () => {
@@ -164,7 +178,7 @@ const Game = (gameSize, ballSize) => {
     };
 
     /**
-     * Function stops the game
+     * Funkcja konczy gre z przegranym wynikiem
      * @returns {void}
      */
     const gameOver = () => {
@@ -173,6 +187,10 @@ const Game = (gameSize, ballSize) => {
         isPause = false;
     };
 
+    /**
+     * Funkcja konczy gre z wygranym wynikiem
+     * @returns {void}
+     */
     const getWin = () => {
         isGameOver = false;
         isStart = false;
@@ -181,19 +199,19 @@ const Game = (gameSize, ballSize) => {
     };
 
     /**
-     * Function returns current level of the game
+     * Funkcja zwraca aktualny level gry
      * @returns {number} Current level of the game
      */
     const getCurrentLevel = () => level;
 
     /**
-     * Function returns ball's properties.
+     * Funkcja zwraca wlascisoci pilki (pozycje i radius)
      * @returns {x: number, y: number, radius: number} object The ball's properties
      */
     const getBall = () => ball;
 
     /**
-     * Function moves the ball by the specified number of pixels.
+     * Funkcja przesuwa pilke na odpowiednia ilosc pixeli
      * @param {number} forX The pixels amount by which the ball should be moved horizontally.
      * @param {number} forY The pixels amount by which the ball should be moved vertically.
      * @returns {void}
@@ -209,7 +227,7 @@ const Game = (gameSize, ballSize) => {
     };
 
     /**
-     * Function checks if the ball have fallen into one of the trap holes
+     * Funkcja sprawdza czy pilka nie trafila do czerwonej pulapki
      * @returns {boolean} True or false
      */
     const gotInTrap = () => {
@@ -221,7 +239,7 @@ const Game = (gameSize, ballSize) => {
     };
 
     /**
-     * Function checks if the ball have fallen into the finish hole
+     * Funkcja sprawdza czy pilka nie trafila do zielonej dziury (finiszu)
      * @returns {boolean} True or false
      */
     const gotFinish = () => {
@@ -237,7 +255,6 @@ const Game = (gameSize, ballSize) => {
         getBall,
         moveBallBy,
         gameOver,
-        getState,
         isStarted,
         isPaused,
         isGameOvered,

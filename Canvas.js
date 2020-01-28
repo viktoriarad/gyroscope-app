@@ -18,8 +18,8 @@ const Canvas = (canvasParam, ctxParam) => {
     };
 
     /**
-     * Function that is responsible for rendering of the canvas
-     * @returns {boolean} True if canvas was rendered or false if not
+     * Funkcja odpowiedzialna za rendering canvasu
+     * @returns {boolean} Zwraca true jesli canvas zostal wyrendorowany lub false jesli nie
      */
     const render = () => {
         if (IsGameStarted() === false) return false;
