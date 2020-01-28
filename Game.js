@@ -17,7 +17,7 @@ const Game = (gameSize, ballSize) => {
     };
 
     const holes = {
-        finish: {x: 0, y: 0, radius: 0},
+        finish: {x: 0, y: 0, radius: ballSize * 1.5},
         traps: [
             {x: 0, y: 0, radius: 0}
         ]
@@ -48,38 +48,61 @@ const Game = (gameSize, ballSize) => {
         isGameWon = false;
         if (restart) level = 1;
         else level++;
-        ball.x = canvasSize.width / 2;
-        ball.y = canvasSize.height / 2;
-        generateHoles();
+        generateBallPosition();
+        generateFinishHolePosition();
+        generateTrapHoles();
     };
 
-    const generateHoles = () => {
+    const generateTrapHoles = () => {
         const trapHoles = [];
-        const finishHole = {};
         const holeAmount = 5 + level * 2;
-        const radius = 15 + level * 2;
+        const radius = 15 + level;
 
-        for (let i=0 ; i <= holeAmount; i++) {
-            const x = Math.floor(Math.random() * (canvasSize.width - radius*2) + radius);
-            const y = Math.floor(Math.random() * (canvasSize.height - radius*2) + radius);
-            trapHoles.push({x, y, radius});
+        for (let i = 0 ; i <= holeAmount; i++) {
+            const hole = generateHole(radius, trapHoles);
+            trapHoles.push(hole);
         }
 
         holes.traps = trapHoles;
-        holes.finish = generateFinishHole(trapHoles);
     };
 
-    const generateFinishHole = (trapHoles) => {
-        const radius = 15;
+    const generateHole = (radius, trapHoles) => {
         const x = Math.floor(Math.random() * (canvasSize.width - radius*2) + radius);
         const y = Math.floor(Math.random() * (canvasSize.height - radius*2) + radius);
 
-        const regenerate = trapHoles.some(hole => {
-            return Math.abs(hole.x - x) - hole.radius - radius <= radius;
+        const trapCrossing = trapHoles.some(hole => {
+            const nearX = Math.abs(hole.x - x) - hole.radius - radius <= 0;
+            const nearY = Math.abs(hole.y - y) - hole.radius - radius <= 0;
+            return nearX && nearY;
         });
 
-        if (regenerate) return generateFinishHole(trapHoles);
-        return {x, y, radius};
+        const ballCrossing = (
+            Math.abs(ball.x - x) - ball.radius - radius <= radius
+            && Math.abs(ball.y - y) - ball.radius - radius <= radius
+        );
+        const finishCrossing = (
+            Math.abs(holes.finish.x - x) - holes.finish.radius - radius <= 0
+            && Math.abs(holes.finish.y - y) - holes.finish.radius - radius <= 0
+        );
+
+        if (trapCrossing || ballCrossing || finishCrossing) return generateHole(radius, trapHoles);
+        return {x, y, radius}
+    };
+
+    const generateBallPosition = () => {
+        const x = Math.floor((canvasSize.width * 0.8) + Math.random() * (canvasSize.width * 0.2) - ballSize);
+        const y = Math.floor(Math.random() * (canvasSize.height - ballSize*2) + ballSize);
+
+        ball.x = x;
+        ball.y = y;
+    };
+
+    const generateFinishHolePosition = () => {
+        const x = Math.floor(Math.random() * (canvasSize.width * 0.2) + holes.finish.radius);
+        const y = Math.floor(Math.random() * (canvasSize.height - holes.finish.radius*2) + holes.finish.radius);
+
+        holes.finish.x = x;
+        holes.finish.y = y;
     };
 
     /**
@@ -178,8 +201,8 @@ const Game = (gameSize, ballSize) => {
     const moveBallBy = (forX, forY) => {
         const multiplier = getOrientation().reversed ? -1 : 1;
 
-        ball.x -= forX * multiplier;
-        ball.y -= forY * multiplier;
+        ball.x -= forX * multiplier * level * 0.5;
+        ball.y -= forY * multiplier * level * 0.5;
 
         if (gotInTrap() === true) return gameOver();
         if (gotFinish() === true) return getWin();
