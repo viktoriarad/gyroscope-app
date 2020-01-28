@@ -3,6 +3,8 @@ const DOM = () => {
     const rotateMsg = document.querySelector('.rotate-msg');
     const pauseMsg = document.querySelector('.pause-msg');
     const gameoverMsg = document.querySelector('.gameover-msg');
+    const nextlevelMsg = document.querySelector('.nextlevel-msg');
+    const nextlevelNmbr = document.querySelector('.nextlevel-nmbr');
     const canvas = document.getElementById('gameCanvas');
 
     let getDeviceSize;
@@ -14,6 +16,8 @@ const DOM = () => {
     let isGameStarted;
     let isGamePaused;
     let isGameOvered;
+    let isWin;
+    let getCurrentLevel;
     let moveBallBy;
     let isLandscapeMode;
     let isPortraitMode;
@@ -37,6 +41,14 @@ const DOM = () => {
 
     const setIsGameOvered = (functionToSet) => {
         isGameOvered = functionToSet;
+    };
+
+    const setIsWin = (functionToSet) => {
+        isWin = functionToSet;
+    };
+
+    const setCurrentLevelGetter = (functionToSet) => {
+        getCurrentLevel = functionToSet;
     };
 
     const setOrientationModeGetter = (functionToSet) => {
@@ -83,8 +95,12 @@ const DOM = () => {
     };
 
     const deviceMotionHandler = (e) => {
-        if (isGameStarted() && isGamePaused()) return;
-        if (isGameOvered()) return;
+        const start = isGameStarted();
+        const pause = isGamePaused();
+        const gameover = isGameOvered();
+        const win = isWin();
+
+        if (start && pause || gameover || win) return;
 
         const x = e.accelerationIncludingGravity.x.toFixed(1);
         const y = e.accelerationIncludingGravity.y.toFixed(1);
@@ -93,6 +109,9 @@ const DOM = () => {
         render();
         if (isGameOvered()) {
             gameoverMsg.classList.remove('invisible');
+        } else if (isWin()) {
+            nextlevelMsg.classList.remove('invisible');
+            nextlevelNmbr.innerHTML = getCurrentLevel() + 1;
         }
     };
 
@@ -120,6 +139,7 @@ const DOM = () => {
         if (isPortrait) {
             rotateMsg.classList.remove('invisible');
             gameoverMsg.classList.add('invisible');
+            nextlevelMsg.classList.add('invisible');
         } else {
             rotateMsg.classList.add('invisible');
         }
@@ -130,6 +150,7 @@ const DOM = () => {
         const gameStart = isGameStarted();
         const gamePause = isGamePaused();
         const gameOver = isGameOvered();
+        const win = isWin();
 
         if (gameStart && gamePause && landscape) {
             pauseMsg.classList.remove('invisible');
@@ -138,6 +159,10 @@ const DOM = () => {
         }
 
         if (gameOver && landscape) gameoverMsg.classList.remove('invisible');
+        if (win && landscape) {
+            nextlevelNmbr.innerHTML = getCurrentLevel() + 1;
+            nextlevelMsg.classList.remove('invisible');
+        }
     };
 
     startGameBtn.addEventListener('click', () => getAPIPermission());
@@ -149,8 +174,15 @@ const DOM = () => {
     });
 
     gameoverMsg.addEventListener('click', () => {
-        startGame(true);
+        const restart = true;
+
+        startGame(restart);
         gameoverMsg.classList.add('invisible');
+    });
+
+    nextlevelMsg.addEventListener('click', () => {
+        startGame();
+        nextlevelMsg.classList.add('invisible');
     });
 
     window.addEventListener('load', onLoad);
@@ -167,6 +199,8 @@ const DOM = () => {
         setIsGameStartedGetter,
         setIsGamePausedGetter,
         setIsGameOvered,
+        setIsWin,
+        setCurrentLevelGetter,
         setMoveBallBy,
         setLandscapeModeChecker,
         setPortraitModeChecker,

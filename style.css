@@ -40,7 +40,8 @@ body {
 
 .rotate-msg,
 .pause-msg,
-.gameover-msg {
+.gameover-msg,
+.nextlevel-msg {
     position: absolute;
     top: 0;
     left: 0;
@@ -61,9 +62,14 @@ body {
     background-color: rgba(255, 0, 10, 0.5);
 }
 
+.nextlevel-msg {
+    background-color: rgba(0, 255, 32, 0.5);
+}
+
 .rotate-txt,
 .pause-txt,
-.gameover-txt {
+.gameover-txt,
+.nextlevel-txt {
     color: #ffffff;
     text-transform: uppercase;
     text-align: center;

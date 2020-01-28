@@ -15,6 +15,8 @@ oDOM.setRenderer(oCanvas.render);
 oDOM.setIsGameStartedGetter(oGame.isStarted);
 oDOM.setIsGamePausedGetter(oGame.isPaused);
 oDOM.setIsGameOvered(oGame.isGameOvered);
+oDOM.setIsWin(oGame.isWin);
+oDOM.setCurrentLevelGetter(oGame.getCurrentLevel);
 oDOM.setMoveBallBy(oGame.moveBallBy);
 oDOM.setLandscapeModeChecker(oDevice.isLandscape);
 oDOM.setPortraitModeChecker(oDevice.isPortrait);

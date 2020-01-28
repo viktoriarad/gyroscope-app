@@ -27,6 +27,7 @@ const Game = (gameSize, ballSize) => {
     let isStart = false;
     let isPause = false;
     let isGameOver = false;
+    let isGameWon = false;
     let getOrientation;
 
     const setOrientationGetter = (functionToSet) => {
@@ -44,8 +45,9 @@ const Game = (gameSize, ballSize) => {
         isStart = true;
         isPause = false;
         isGameOver = false;
-        level++;
+        isGameWon = false;
         if (restart) level = 1;
+        else level++;
         ball.x = canvasSize.width / 2;
         ball.y = canvasSize.height / 2;
         generateHoles();
@@ -90,16 +92,36 @@ const Game = (gameSize, ballSize) => {
         if (isGameOver) return 'gameover';
     };
 
+    /**
+     * Function checks if the game was started
+     * @returns {boolean} True or false
+     */
     const isStarted = () => {
         return isStart;
     };
 
+    /**
+     * Function checks if it is pause
+     * @returns {boolean} True or false
+     */
     const isPaused = () => {
         return isPause;
     };
 
+    /**
+     * Function checks if it is game over
+     * @returns {boolean} True or false
+     */
     const isGameOvered = () => {
         return isGameOver;
+    };
+
+    /**
+     * Function checks if it is win
+     * @returns {boolean} True or false
+     */
+    const isWin = () => {
+        return isGameWon;
     };
 
     /**
@@ -128,6 +150,19 @@ const Game = (gameSize, ballSize) => {
         isPause = false;
     };
 
+    const getWin = () => {
+        isGameOver = false;
+        isStart = false;
+        isPause = false;
+        isGameWon = true;
+    };
+
+    /**
+     * Function returns current level of the game
+     * @returns {number} Current level of the game
+     */
+    const getCurrentLevel = () => level;
+
     /**
      * Function returns ball's properties.
      * @returns {x: number, y: number, radius: number} object The ball's properties
@@ -147,9 +182,13 @@ const Game = (gameSize, ballSize) => {
         ball.y -= forY * multiplier;
 
         if (gotInTrap() === true) return gameOver();
-        if (gotFinish() === true) return window.alert('WINNER!');
+        if (gotFinish() === true) return getWin();
     };
 
+    /**
+     * Function checks if the ball have fallen into one of the trap holes
+     * @returns {boolean} True or false
+     */
     const gotInTrap = () => {
         return holes.traps.some(trap => {
             const x = Math.abs(trap.x - ball.x) - trap.radius <= 0;
@@ -158,6 +197,10 @@ const Game = (gameSize, ballSize) => {
         });
     };
 
+    /**
+     * Function checks if the ball have fallen into the finish hole
+     * @returns {boolean} True or false
+     */
     const gotFinish = () => {
         const x = Math.abs(holes.finish.x - ball.x) - holes.finish.radius <= 0;
         const y = Math.abs(holes.finish.y - ball.y) - holes.finish.radius <= 0;
@@ -175,7 +218,9 @@ const Game = (gameSize, ballSize) => {
         isStarted,
         isPaused,
         isGameOvered,
+        isWin,
         setOrientationGetter,
-        getHoles
+        getHoles,
+        getCurrentLevel
     };
 };
