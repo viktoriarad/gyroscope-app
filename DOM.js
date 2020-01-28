@@ -149,7 +149,7 @@ const DOM = () => {
     });
 
     gameoverMsg.addEventListener('click', () => {
-        startGame();
+        startGame(true);
         gameoverMsg.classList.add('invisible');
     });
 

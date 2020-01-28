@@ -37,12 +37,15 @@ const Game = (gameSize, ballSize) => {
 
     /**
      * Function starts the game
+     * @param {boolean} restart True if restart is needed or false if not
      * @returns {void}
      */
-    const start = () => {
+    const start = (restart) => {
         isStart = true;
         isPause = false;
+        isGameOver = false;
         level++;
+        if (restart) level = 1;
         ball.x = canvasSize.width / 2;
         ball.y = canvasSize.height / 2;
         generateHoles();
