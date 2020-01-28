@@ -17,12 +17,9 @@ const Game = (gameSize, ballSize) => {
     };
 
     const holes = {
-        finish: {x: 200, y: 200},
+        finish: {x: 0, y: 0, radius: 0},
         traps: [
-            {x: 100, y: 300},
-            {x: 700, y: 10},
-            {x: 500, y: 80},
-            {x: 300, y: 300},
+            {x: 0, y: 0, radius: 0}
         ]
     };
 
@@ -146,13 +143,22 @@ const Game = (gameSize, ballSize) => {
         ball.x -= forX * multiplier;
         ball.y -= forY * multiplier;
 
-        const gotInTrap = holes.traps.some(el => {
-            const x = Math.abs(el.x - ball.x) - el.radius <= 0;
-            const y = Math.abs(el.y - ball.y) - el.radius <= 0;
+        if (gotInTrap() === true) return gameOver();
+        if (gotFinish() === true) return window.alert('WINNER!');
+    };
+
+    const gotInTrap = () => {
+        return holes.traps.some(trap => {
+            const x = Math.abs(trap.x - ball.x) - trap.radius <= 0;
+            const y = Math.abs(trap.y - ball.y) - trap.radius <= 0;
             return x && y;
         });
+    };
 
-        if (gotInTrap) gameOver();
+    const gotFinish = () => {
+        const x = Math.abs(holes.finish.x - ball.x) - holes.finish.radius <= 0;
+        const y = Math.abs(holes.finish.y - ball.y) - holes.finish.radius <= 0;
+        return x && y;
     };
 
     return {
